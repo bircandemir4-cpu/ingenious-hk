@@ -121,7 +121,7 @@
   });
 
   var WEB3FORMS_URL = "https://api.web3forms.com/submit";
-  var WEB3FORMS_KEY = "72d9ac92-8478-41fb-931c-32b8d7ca5053";
+  var WEB3FORMS_KEY = "dad220d3-0e78-4ea7-9fe7-ca3f85ec4eb2";
 
   var inquiryForms = document.getElementById("inquiry-forms");
   var success = document.getElementById("form-success");

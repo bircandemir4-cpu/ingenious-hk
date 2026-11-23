@@ -43,7 +43,7 @@
     if (window.innerWidth >= 960) setMenu(false);
   });
 
-  var sections = document.querySelectorAll("main section[id], .split-panel[id]");
+  var sections = document.querySelectorAll("main section[id]");
   function markCurrent() {
     var current = "";
     sections.forEach(function (section) {

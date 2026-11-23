@@ -48,8 +48,8 @@
         <h1 id="hero-title">On-Demand<br> Freelance &amp; Event<br> Talent in Hong Kong.</h1>
         <p class="hero-sub">From professional camera crews and exhibition promoters to freelance actors and seasonal Santa Claus performers—Ingenious connects businesses with vetted, reliable part-time specialists.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#contact" data-tab="client">Hire Talent</a>
-          <a class="btn btn-ghost" href="#contact" data-tab="freelancer">Apply as Freelancer</a>
+          <a class="btn btn-primary" href="https://wa.me/85292120612" target="_blank" rel="noopener noreferrer">Hire Talent</a>
+          <a class="btn btn-ghost" href="https://instagram.com/ingenious_agencyhk" target="_blank" rel="noopener noreferrer">Instagram</a>
         </div>
         <a class="scroll-cue" href="#about">
           <span>Scroll</span>
@@ -162,159 +162,28 @@
             </div>
           </li>
         </ul>
-        <a class="btn btn-primary" href="#contact" data-tab="client">Hire Talent</a>
+        <a class="btn btn-primary" href="https://wa.me/85292120612" target="_blank" rel="noopener noreferrer">Hire Talent</a>
       </div>
     </section>
 
     <section class="section section-cream" id="contact" aria-labelledby="contact-title">
-      <div class="wrap contact-wrap">
-        <div class="section-head reveal">
-          <p class="eyebrow">Contact</p>
-          <h2 id="contact-title">Tell us what you need.</h2>
-          <p class="section-intro">Request talent for a date in Hong Kong, or register as a freelancer. The desk follows up after the form is sent.</p>
-        </div>
-
-        <ul class="quick-links reveal">
+      <div class="wrap contact-wrap reveal">
+        <p class="eyebrow">Contact</p>
+        <h2 id="contact-title">WhatsApp or Instagram.</h2>
+        <ul class="contact-list">
           <li>
             <a href="https://wa.me/85292120612" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3.2A8.7 8.7 0 0 0 4.6 16.3L3.4 20.6l4.4-1.15A8.7 8.7 0 1 0 12 3.2Z" fill="none" stroke="currentColor" stroke-width="1.4"/>
-                <path d="M8.7 9.2c.2 1.6 1.5 3.3 3.2 4.3 1.4.8 2.2.7 2.6.5.3-.15.9-.7 1-1.1.1-.3 0-.5-.15-.7l-1-.6c-.2-.15-.45-.1-.65.1l-.4.5c-.15.15-.3.2-.55.1-.7-.3-1.5-.9-2-1.6-.2-.25-.15-.4 0-.6l.4-.5c.2-.2.2-.45.1-.65l-.55-1.05c-.15-.3-.4-.4-.7-.3-.35.1-.8.45-.9 1.05Z" fill="currentColor"/>
-              </svg>
-              <span>
-                <small>WhatsApp</small>
-                +852 9212 0612
-              </span>
+              <span class="contact-label">WhatsApp</span>
+              <span class="contact-value">+852 9212 0612</span>
             </a>
           </li>
           <li>
             <a href="https://instagram.com/ingenious_agencyhk" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="4" y="4" width="16" height="16" rx="4" fill="none" stroke="currentColor" stroke-width="1.4"/>
-                <circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" stroke-width="1.4"/>
-                <circle cx="16.6" cy="7.5" r="0.8" fill="currentColor"/>
-              </svg>
-              <span>
-                <small>Instagram</small>
-                @ingenious_agencyhk
-              </span>
+              <span class="contact-label">Instagram</span>
+              <span class="contact-value">@ingenious_agencyhk</span>
             </a>
           </li>
         </ul>
-
-        <div class="inquiry reveal" id="inquiry">
-          <div id="inquiry-forms">
-            <div class="tab-list" role="tablist" aria-label="Inquiry type">
-              <button class="tab is-active" id="tab-client" type="button" role="tab" aria-selected="true" aria-controls="panel-client" data-tab="client">Client Talent Request</button>
-              <button class="tab" id="tab-freelancer" type="button" role="tab" aria-selected="false" aria-controls="panel-freelancer" tabindex="-1" data-tab="freelancer">Freelancer Registration</button>
-            </div>
-
-            <div class="tab-panel" id="panel-client" role="tabpanel" aria-labelledby="tab-client">
-              <form id="client-form" novalidate>
-                <p class="form-status" id="client-status" role="alert" hidden></p>
-                <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="client-company">Company / Name</label>
-                    <input id="client-company" name="company" type="text" autocomplete="organization" required>
-                    <p class="field-error" id="err-client-company" hidden></p>
-                  </div>
-                  <div class="field">
-                    <label for="client-contact">WhatsApp / Email</label>
-                    <input id="client-contact" name="contact" type="text" autocomplete="on" inputmode="email" required>
-                    <p class="field-error" id="err-client-contact" hidden></p>
-                  </div>
-                  <div class="field">
-                    <label for="client-talent">Talent Needed</label>
-                    <select id="client-talent" name="talent" required>
-                      <option value="">Select a category</option>
-                      <option>Camera Teams &amp; Crew</option>
-                      <option>Exhibition &amp; Brand Promoters</option>
-                      <option>Freelance Actors &amp; Event Performers</option>
-                      <option>Pop-Up &amp; Retail Staff</option>
-                    </select>
-                    <p class="field-error" id="err-client-talent" hidden></p>
-                  </div>
-                  <div class="field">
-                    <label for="client-event">Event Date &amp; Location</label>
-                    <input id="client-event" name="event" type="text" autocomplete="off" required>
-                    <p class="field-error" id="err-client-event" hidden></p>
-                  </div>
-                  <div class="field field-wide">
-                    <label for="client-brief">Brief</label>
-                    <textarea id="client-brief" name="brief" rows="5" required></textarea>
-                    <p class="field-error" id="err-client-brief" hidden></p>
-                  </div>
-                </div>
-                <div class="form-actions">
-                  <button class="btn btn-solid" type="submit">Send request</button>
-                </div>
-              </form>
-            </div>
-
-            <div class="tab-panel" id="panel-freelancer" role="tabpanel" aria-labelledby="tab-freelancer" hidden>
-              <form id="freelancer-form" novalidate>
-                <p class="form-status" id="freelancer-status" role="alert" hidden></p>
-                <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
-                <div class="form-grid">
-                  <div class="field">
-                    <label for="free-name">Full Name</label>
-                    <input id="free-name" name="name" type="text" autocomplete="name" required>
-                    <p class="field-error" id="err-free-name" hidden></p>
-                  </div>
-                  <div class="field">
-                    <label for="free-whatsapp">WhatsApp</label>
-                    <input id="free-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" required>
-                    <p class="field-error" id="err-free-whatsapp" hidden></p>
-                  </div>
-                  <fieldset class="field field-wide">
-                    <legend>Skills</legend>
-                    <div class="choice-grid">
-                      <label class="choice">
-                        <input type="checkbox" name="skills" value="Camera Crew">
-                        <span>Camera Crew</span>
-                      </label>
-                      <label class="choice">
-                        <input type="checkbox" name="skills" value="Exhibition Promoter">
-                        <span>Exhibition Promoter</span>
-                      </label>
-                      <label class="choice">
-                        <input type="checkbox" name="skills" value="Actor/Performer">
-                        <span>Actor/Performer</span>
-                      </label>
-                      <label class="choice">
-                        <input type="checkbox" name="skills" value="Event Staff">
-                        <span>Event Staff</span>
-                      </label>
-                    </div>
-                    <p class="field-error" id="err-free-skills" hidden></p>
-                  </fieldset>
-                  <div class="field">
-                    <label for="free-portfolio">Portfolio / IG link</label>
-                    <input id="free-portfolio" name="portfolio" type="text" autocomplete="url" inputmode="url" placeholder="https:// or @handle">
-                    <p class="field-error" id="err-free-portfolio" hidden></p>
-                  </div>
-                  <div class="field">
-                    <label for="free-availability">Availability</label>
-                    <textarea id="free-availability" name="availability" rows="4" required></textarea>
-                    <p class="field-error" id="err-free-availability" hidden></p>
-                  </div>
-                </div>
-                <div class="form-actions">
-                  <button class="btn btn-solid" type="submit">Send registration</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div class="success" id="form-success" hidden role="status">
-            <p class="eyebrow" id="success-kicker">Sent</p>
-            <h3 id="success-title">Your message has been sent.</h3>
-            <p id="success-copy">The Ingenious desk has it and will follow up.</p>
-            <dl class="success-summary" id="success-summary"></dl>
-            <button class="text-btn" id="success-reset" type="button">Send another</button>
-          </div>
-        </div>
       </div>
     </section>
   </main>

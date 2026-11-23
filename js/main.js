@@ -182,6 +182,14 @@
     status.textContent = "";
   }
 
+  function safeApiMessage(text) {
+    if (typeof text !== "string") return "";
+    var cleaned = text.replace(/\s+/g, " ").trim();
+    if (!cleaned || cleaned.indexOf(WEB3FORMS_KEY) !== -1 || cleaned.indexOf("<") !== -1) return "";
+    if (cleaned.length > 160) cleaned = cleaned.slice(0, 160);
+    return cleaned;
+  }
+
   function sendToDesk(form, fields) {
     var button = form.querySelector("[type='submit']");
     var bot = form.querySelector("[name='botcheck']");
@@ -207,13 +215,17 @@
       },
       body: JSON.stringify(payload)
     }).then(function (response) {
-      return response.json().then(function (data) {
-        if (!response.ok || !data || data.success !== true) {
-          throw new Error("send failed");
-        }
+      return response.json().catch(function () { return null; }).then(function (data) {
+        if (response.ok && data && data.success === true) return;
+        var failed = new Error("send failed");
+        failed.detail = safeApiMessage(data && data.message);
+        throw failed;
       });
-    }).catch(function () {
-      showFormError(form, "We couldn’t send that. Check your connection and try again.");
+    }).catch(function (err) {
+      var detail = err && err.detail;
+      var text = "We couldn’t send that. Check your connection and try again.";
+      if (detail) text = "We couldn’t send that. " + detail;
+      showFormError(form, text);
       return Promise.reject(new Error("send failed"));
     }).finally(function () {
       if (button) {
@@ -323,12 +335,15 @@
 
       var clientFields = {
         subject: "Ingenious client request",
+        name: company,
         from_name: company,
-        "Company / Name": company,
-        "WhatsApp / Email": contact,
-        "Talent Needed": talent,
-        "Event Date & Location": eventWhen,
-        Brief: brief
+        message: [
+          "Company / Name: " + company,
+          "WhatsApp / Email: " + contact,
+          "Talent Needed: " + talent,
+          "Event Date & Location: " + eventWhen,
+          "Brief: " + brief
+        ].join("\n")
       };
       if (isEmail(contact)) clientFields.email = contact;
 
@@ -398,12 +413,15 @@
 
       sendToDesk(freelancerForm, {
         subject: "Ingenious freelancer registration",
+        name: name,
         from_name: name,
-        "Full Name": name,
-        WhatsApp: whatsapp,
-        Skills: skills.join(", "),
-        "Portfolio / IG": portfolio || "—",
-        Availability: availability
+        message: [
+          "Full Name: " + name,
+          "WhatsApp: " + whatsapp,
+          "Skills: " + skills.join(", "),
+          "Portfolio / IG: " + (portfolio || "—"),
+          "Availability: " + availability
+        ].join("\n")
       }).then(function () {
         showSent(
           "Your registration has been sent.",

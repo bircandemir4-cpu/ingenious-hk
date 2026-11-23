@@ -120,13 +120,16 @@
     });
   });
 
+  var WEB3FORMS_URL = "https://api.web3forms.com/submit";
+  var WEB3FORMS_KEY = "72d9ac92-8478-41fb-931c-32b8d7ca5053";
+
   var inquiryForms = document.getElementById("inquiry-forms");
   var success = document.getElementById("form-success");
   var successSummary = document.getElementById("success-summary");
-  var successMail = document.getElementById("success-mail");
-  var successWa = document.getElementById("success-wa");
   var successReset = document.getElementById("success-reset");
   var successTitle = document.getElementById("success-title");
+  var successCopy = document.getElementById("success-copy");
+  var successKicker = document.getElementById("success-kicker");
   var lastTab = "client";
 
   function showForms() {
@@ -134,11 +137,13 @@
     if (success) success.hidden = true;
   }
 
-  function showSuccess(title, rows, subject, recipient) {
+  function showSent(title, copy, rows) {
     lastTab = document.getElementById("panel-freelancer") && !document.getElementById("panel-freelancer").hidden
       ? "freelancer"
       : "client";
+    if (successKicker) successKicker.textContent = "Sent";
     if (successTitle) successTitle.textContent = title;
+    if (successCopy) successCopy.textContent = copy;
     if (successSummary) {
       successSummary.replaceChildren();
       rows.forEach(function (row) {
@@ -151,23 +156,71 @@
         successSummary.append(wrap);
       });
     }
-    var body = rows.map(function (row) { return row[0] + ": " + row[1]; }).join("\n");
-    if (body.length > 1500) body = body.slice(0, 1500) + "…";
-    var encoded = encodeURIComponent(body);
-    if (successMail) {
-      successMail.href = "mailto:" + (recipient || "") + "?subject=" + encodeURIComponent(subject) + "&body=" + encoded;
-    }
-    if (successWa) {
-      successWa.href = "https://wa.me/85292120612?text=" + encodeURIComponent(subject + "\n\n" + body);
-    }
     if (inquiryForms) inquiryForms.hidden = true;
     if (success) {
       success.hidden = false;
-      var contact = document.getElementById("contact");
-      if (contact) contact.scrollIntoView({ behavior: "smooth", block: "start" });
-      success.focus && success.setAttribute("tabindex", "-1");
+      var contactSection = document.getElementById("contact");
+      if (contactSection) contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      success.setAttribute("tabindex", "-1");
       success.focus();
     }
+  }
+
+  function showFormError(form, message) {
+    var status = form.querySelector(".form-status");
+    if (!status) return;
+    status.hidden = false;
+    status.textContent = message;
+    status.focus && status.setAttribute("tabindex", "-1");
+    status.focus();
+  }
+
+  function clearFormStatus(form) {
+    var status = form.querySelector(".form-status");
+    if (!status) return;
+    status.hidden = true;
+    status.textContent = "";
+  }
+
+  function sendToDesk(form, fields) {
+    var button = form.querySelector("[type='submit']");
+    var bot = form.querySelector("[name='botcheck']");
+    clearFormStatus(form);
+    if (button) {
+      button.disabled = true;
+      if (!button.dataset.label) button.dataset.label = button.textContent;
+      button.textContent = "Sending…";
+    }
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      botcheck: bot && bot.checked ? "on" : ""
+    };
+    Object.keys(fields).forEach(function (key) {
+      payload[key] = fields[key];
+    });
+
+    return fetch(WEB3FORMS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(payload)
+    }).then(function (response) {
+      return response.json().then(function (data) {
+        if (!response.ok || !data || data.success !== true) {
+          throw new Error("send failed");
+        }
+      });
+    }).catch(function () {
+      showFormError(form, "We couldn’t send that. Check your connection and try again.");
+      return Promise.reject(new Error("send failed"));
+    }).finally(function () {
+      if (button) {
+        button.disabled = false;
+        button.textContent = button.dataset.label || button.textContent;
+      }
+    });
   }
 
   if (successReset) {
@@ -268,13 +321,30 @@
         return;
       }
 
-      showSuccess("Your talent request is ready.", [
-        ["Company / Name", company],
-        ["WhatsApp / Email", contact],
-        ["Talent Needed", talent],
-        ["Event Date & Location", eventWhen],
-        ["Brief", brief]
-      ], "Ingenious — Client Talent Request", "bircandemir4@gmail.com");
+      var clientFields = {
+        subject: "Ingenious client request",
+        from_name: company,
+        "Company / Name": company,
+        "WhatsApp / Email": contact,
+        "Talent Needed": talent,
+        "Event Date & Location": eventWhen,
+        Brief: brief
+      };
+      if (isEmail(contact)) clientFields.email = contact;
+
+      sendToDesk(clientForm, clientFields).then(function () {
+        showSent(
+          "Your talent request has been sent.",
+          "The Ingenious desk has it and will follow up.",
+          [
+            ["Company / Name", company],
+            ["WhatsApp / Email", contact],
+            ["Talent Needed", talent],
+            ["Event Date & Location", eventWhen],
+            ["Brief", brief]
+          ]
+        );
+      }).catch(function () {});
     });
   }
 
@@ -326,13 +396,27 @@
         return;
       }
 
-      showSuccess("Your registration is ready.", [
-        ["Full Name", name],
-        ["WhatsApp", whatsapp],
-        ["Skills", skills.join(", ")],
-        ["Portfolio / IG", portfolio || "—"],
-        ["Availability", availability]
-      ], "Ingenious — Freelancer Registration");
+      sendToDesk(freelancerForm, {
+        subject: "Ingenious freelancer registration",
+        from_name: name,
+        "Full Name": name,
+        WhatsApp: whatsapp,
+        Skills: skills.join(", "),
+        "Portfolio / IG": portfolio || "—",
+        Availability: availability
+      }).then(function () {
+        showSent(
+          "Your registration has been sent.",
+          "The Ingenious desk has it and will follow up.",
+          [
+            ["Full Name", name],
+            ["WhatsApp", whatsapp],
+            ["Skills", skills.join(", ")],
+            ["Portfolio / IG", portfolio || "—"],
+            ["Availability", availability]
+          ]
+        );
+      }).catch(function () {});
     });
   }
 })();

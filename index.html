@@ -171,7 +171,7 @@
         <div class="section-head reveal">
           <p class="eyebrow">Contact</p>
           <h2 id="contact-title">Tell us what you need.</h2>
-          <p class="section-intro">Request talent for a date in Hong Kong, or register as a freelancer. Messages are prepared on this page and sent from your own email or WhatsApp.</p>
+          <p class="section-intro">Request talent for a date in Hong Kong, or register as a freelancer. The desk follows up after the form is sent.</p>
         </div>
 
         <ul class="quick-links reveal">
@@ -211,6 +211,10 @@
 
             <div class="tab-panel" id="panel-client" role="tabpanel" aria-labelledby="tab-client">
               <form id="client-form" novalidate>
+                <p class="form-status" id="client-status" role="alert" hidden></p>
+                <div class="hp" aria-hidden="true">
+                  <label>Leave blank <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
+                </div>
                 <div class="form-grid">
                   <div class="field">
                     <label for="client-company">Company / Name</label>
@@ -245,13 +249,17 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button class="btn btn-solid" type="submit">Prepare request</button>
+                  <button class="btn btn-solid" type="submit">Send request</button>
                 </div>
               </form>
             </div>
 
             <div class="tab-panel" id="panel-freelancer" role="tabpanel" aria-labelledby="tab-freelancer" hidden>
               <form id="freelancer-form" novalidate>
+                <p class="form-status" id="freelancer-status" role="alert" hidden></p>
+                <div class="hp" aria-hidden="true">
+                  <label>Leave blank <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label>
+                </div>
                 <div class="form-grid">
                   <div class="field">
                     <label for="free-name">Full Name</label>
@@ -297,22 +305,18 @@
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button class="btn btn-solid" type="submit">Prepare registration</button>
+                  <button class="btn btn-solid" type="submit">Send registration</button>
                 </div>
               </form>
             </div>
           </div>
 
           <div class="success" id="form-success" hidden role="status">
-            <p class="eyebrow">Ready to send</p>
-            <h3 id="success-title">Your message is prepared.</h3>
-            <p id="success-copy">Nothing has been submitted to a server. Send it from your email or WhatsApp and the Ingenious desk will follow up.</p>
+            <p class="eyebrow" id="success-kicker">Sent</p>
+            <h3 id="success-title">Your message has been sent.</h3>
+            <p id="success-copy">The Ingenious desk has it and will follow up.</p>
             <dl class="success-summary" id="success-summary"></dl>
-            <div class="form-actions">
-              <a class="btn btn-solid" id="success-mail" href="mailto:">Send by email</a>
-              <a class="btn btn-ghost on-light" id="success-wa" href="https://wa.me/85292120612" target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
-            </div>
-            <button class="text-btn" id="success-reset" type="button">Edit message</button>
+            <button class="text-btn" id="success-reset" type="button">Send another</button>
           </div>
         </div>
       </div>

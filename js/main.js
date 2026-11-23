@@ -134,7 +134,7 @@
     if (success) success.hidden = true;
   }
 
-  function showSuccess(title, rows, subject) {
+  function showSuccess(title, rows, subject, recipient) {
     lastTab = document.getElementById("panel-freelancer") && !document.getElementById("panel-freelancer").hidden
       ? "freelancer"
       : "client";
@@ -155,7 +155,7 @@
     if (body.length > 1500) body = body.slice(0, 1500) + "…";
     var encoded = encodeURIComponent(body);
     if (successMail) {
-      successMail.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encoded;
+      successMail.href = "mailto:" + (recipient || "") + "?subject=" + encodeURIComponent(subject) + "&body=" + encoded;
     }
     if (successWa) {
       successWa.href = "https://wa.me/85292120612?text=" + encodeURIComponent(subject + "\n\n" + body);
@@ -274,7 +274,7 @@
         ["Talent Needed", talent],
         ["Event Date & Location", eventWhen],
         ["Brief", brief]
-      ], "Ingenious — Client Talent Request");
+      ], "Ingenious — Client Talent Request", "bircandemir4@gmail.com");
     });
   }
 

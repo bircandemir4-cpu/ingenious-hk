@@ -170,11 +170,42 @@
     if (!status) return;
     status.hidden = false;
     status.textContent = "We couldn’t send that. Please try again.";
+    status.scrollIntoView({ block: "center", behavior: "instant" });
   }
 
   function valueOf(form, name) {
-    var el = form.elements[name];
-    return (el && el.value ? el.value : "").trim();
+    var el = form.elements.namedItem ? form.elements.namedItem(name) : form.elements[name];
+    var value = el && typeof el.value !== "undefined" ? el.value : "";
+    return String(value == null ? "" : value).trim();
+  }
+
+  function revealInvalid(form) {
+    var bad = form.querySelector("[aria-invalid='true']");
+    var err = bad ? document.getElementById("err-" + bad.id) : null;
+    if (!err) err = form.querySelector(".field-error:not([hidden])");
+    if (err) err.scrollIntoView({ block: "center", behavior: "instant" });
+    if (bad && bad.type !== "date") bad.focus();
+  }
+
+  function bindSubmit(form, handler) {
+    var busy = false;
+    function run(event) {
+      if (event) event.preventDefault();
+      if (busy) return;
+      busy = true;
+      var done = function () { busy = false; };
+      try {
+        Promise.resolve(handler()).then(done, function () {
+          done();
+        });
+      } catch (err) {
+        showFormError(form);
+        done();
+      }
+    }
+    form.addEventListener("submit", run);
+    var button = form.querySelector("[type='submit']");
+    if (button) button.addEventListener("click", run);
   }
 
   function isEmail(value) {
@@ -285,13 +316,12 @@
 
   var clientForm = document.getElementById("client-form");
   if (clientForm) {
-    clientForm.addEventListener("submit", function (event) {
-      event.preventDefault();
+    bindSubmit(clientForm, function () {
       clearFormErrors(clientForm);
       var company = valueOf(clientForm, "company");
       var contact = valueOf(clientForm, "contact");
       var talent = valueOf(clientForm, "talent");
-      var eventDate = valueOf(clientForm, "eventDate");
+      var eventDate = dateInput && dateInput.value ? String(dateInput.value).trim() : "";
       var location = valueOf(clientForm, "location");
       var brief = valueOf(clientForm, "brief");
       var readableDate = formatEventDate(eventDate);
@@ -304,15 +334,14 @@
       if (!talent) ok = fieldError("client-talent", "Choose the talent you need.") && ok;
       else fieldError("client-talent", "");
       if (!eventDate) ok = fieldError("client-date", "Choose an event date.") && ok;
-      else if (dateInput && dateInput.min && eventDate < dateInput.min) ok = fieldError("client-date", "Choose today or a later date.") && ok;
+      else if (/^\d{4}-\d{2}-\d{2}$/.test(eventDate) && dateInput && dateInput.min && eventDate < dateInput.min) ok = fieldError("client-date", "Choose today or a later date.") && ok;
       else fieldError("client-date", "");
       if (location.length < 2) ok = fieldError("client-location", "Add the location.") && ok;
       else fieldError("client-location", "");
       if (brief.length < 12) ok = fieldError("client-brief", "Add a short brief.") && ok;
       else fieldError("client-brief", "");
       if (!ok) {
-        var bad = clientForm.querySelector("[aria-invalid='true']");
-        if (bad) bad.focus();
+        revealInvalid(clientForm);
         return;
       }
 
@@ -331,7 +360,7 @@
       };
       if (isEmail(contact)) fields.email = contact;
 
-      sendToDesk(clientForm, fields).then(function () {
+      return sendToDesk(clientForm, fields).then(function () {
         showSent("Your talent request has been sent.", "The Ingenious desk has it and will follow up.", [
           ["Company / Name", company],
           ["WhatsApp / Email", contact],
@@ -340,14 +369,13 @@
           ["Location", location],
           ["Brief", brief]
         ]);
-      }).catch(function () {});
+      });
     });
   }
 
   var freelancerForm = document.getElementById("freelancer-form");
   if (freelancerForm) {
-    freelancerForm.addEventListener("submit", function (event) {
-      event.preventDefault();
+    bindSubmit(freelancerForm, function () {
       clearFormErrors(freelancerForm);
       var name = valueOf(freelancerForm, "name");
       var whatsapp = valueOf(freelancerForm, "whatsapp");
@@ -377,16 +405,15 @@
       if (availability.length < 3) ok = fieldError("free-availability", "Tell us when you can work.") && ok;
       else fieldError("free-availability", "");
       if (!ok) {
-        var bad = freelancerForm.querySelector("[aria-invalid='true']");
-        if (bad) bad.focus();
-        else if (!skills.length) {
+        revealInvalid(freelancerForm);
+        if (!freelancerForm.querySelector("[aria-invalid='true']") && !skills.length) {
           var firstSkill = freelancerForm.querySelector("input[name='skills']");
           if (firstSkill) firstSkill.focus();
         }
         return;
       }
 
-      sendToDesk(freelancerForm, {
+      return sendToDesk(freelancerForm, {
         subject: "Ingenious freelancer registration",
         name: name,
         from_name: name,
@@ -405,7 +432,7 @@
           ["Portfolio / IG", portfolio || "—"],
           ["Availability", availability]
         ]);
-      }).catch(function () {});
+      });
     });
   }
 })();

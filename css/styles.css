@@ -563,6 +563,198 @@ ul {
   color: var(--gold-deep);
 }
 
+.inquiry {
+  margin-top: 2.25rem;
+  max-width: 40rem;
+}
+
+.tab-list {
+  display: flex;
+  gap: 1.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  appearance: none;
+  margin: 0 0 -1px;
+  padding: 0.7rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tab.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--gold-deep);
+}
+
+.tab-panel {
+  padding-top: 1.15rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.field label,
+.field legend {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.55rem 0;
+  border: 0;
+  border-bottom: 1px solid rgba(28, 25, 21, 0.18);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 5.5rem;
+}
+
+.field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold-deep) 50%), linear-gradient(135deg, var(--gold-deep) 50%, transparent 50%);
+  background-position: calc(100% - 0.45rem) 0.95rem, calc(100% - 0.15rem) 0.95rem;
+  background-size: 0.3rem 0.3rem, 0.3rem 0.3rem;
+  background-repeat: no-repeat;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: none;
+  border-bottom-color: var(--gold-deep);
+}
+
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-bottom-color: var(--danger);
+}
+
+.field-error,
+.form-status {
+  margin: 0.35rem 0 0;
+  color: var(--danger);
+  font-size: 0.8rem;
+}
+
+.form-status {
+  margin: 0 0 0.9rem;
+}
+
+.botcheck {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.choice-grid {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.4rem;
+  border-bottom: 1px solid rgba(28, 25, 21, 0.1);
+  cursor: pointer;
+}
+
+.choice input {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: 0;
+  accent-color: var(--gold-deep);
+}
+
+.form-actions {
+  margin-top: 1.15rem;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.sent h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.sent > p {
+  margin-top: 0.7rem;
+  color: var(--muted);
+}
+
+.sent-summary {
+  margin: 1.1rem 0 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.sent-summary div {
+  display: grid;
+  gap: 0.1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.sent-summary dt {
+  color: var(--gold-deep);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sent-summary dd {
+  margin: 0;
+}
+
+.text-btn {
+  margin-top: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold-deep);
+  cursor: pointer;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
 .site-footer {
   background: var(--ink);
   color: rgba(244, 239, 230, 0.78);
@@ -631,8 +823,14 @@ section[id] {
 
 @media (min-width: 700px) {
   .about-points,
-  .talent-grid {
+  .talent-grid,
+  .form-grid,
+  .choice-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
   }
 
   .hero-actions {

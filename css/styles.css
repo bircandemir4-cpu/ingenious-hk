@@ -631,6 +631,16 @@ ul {
   min-height: 5.5rem;
 }
 
+.field input[type="date"] {
+  color-scheme: light;
+  min-height: 2.35rem;
+}
+
+.field input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.45;
+}
+
 .field select {
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, var(--gold-deep) 50%), linear-gradient(135deg, var(--gold-deep) 50%, transparent 50%);

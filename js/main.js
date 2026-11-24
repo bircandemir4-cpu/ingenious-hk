@@ -260,6 +260,29 @@
     });
   }
 
+  function isoToday() {
+    var now = new Date();
+    var month = String(now.getMonth() + 1);
+    var day = String(now.getDate());
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    return now.getFullYear() + "-" + month + "-" + day;
+  }
+
+  function formatEventDate(iso) {
+    var parts = (iso || "").split("-");
+    if (parts.length !== 3) return iso;
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var year = Number(parts[0]);
+    var month = Number(parts[1]);
+    var day = Number(parts[2]);
+    if (!year || month < 1 || month > 12 || day < 1 || day > 31) return iso;
+    return day + " " + months[month - 1] + " " + year;
+  }
+
+  var dateInput = document.getElementById("client-date");
+  if (dateInput) dateInput.min = isoToday();
+
   var clientForm = document.getElementById("client-form");
   if (clientForm) {
     clientForm.addEventListener("submit", function (event) {
@@ -268,8 +291,10 @@
       var company = valueOf(clientForm, "company");
       var contact = valueOf(clientForm, "contact");
       var talent = valueOf(clientForm, "talent");
-      var eventWhen = valueOf(clientForm, "event");
+      var eventDate = valueOf(clientForm, "eventDate");
+      var location = valueOf(clientForm, "location");
       var brief = valueOf(clientForm, "brief");
+      var readableDate = formatEventDate(eventDate);
       var ok = true;
 
       if (company.length < 2) ok = fieldError("client-company", "Enter a company or your name.") && ok;
@@ -278,8 +303,11 @@
       else fieldError("client-contact", "");
       if (!talent) ok = fieldError("client-talent", "Choose the talent you need.") && ok;
       else fieldError("client-talent", "");
-      if (eventWhen.length < 3) ok = fieldError("client-event", "Add the event date and location.") && ok;
-      else fieldError("client-event", "");
+      if (!eventDate) ok = fieldError("client-date", "Choose an event date.") && ok;
+      else if (dateInput && dateInput.min && eventDate < dateInput.min) ok = fieldError("client-date", "Choose today or a later date.") && ok;
+      else fieldError("client-date", "");
+      if (location.length < 2) ok = fieldError("client-location", "Add the location.") && ok;
+      else fieldError("client-location", "");
       if (brief.length < 12) ok = fieldError("client-brief", "Add a short brief.") && ok;
       else fieldError("client-brief", "");
       if (!ok) {
@@ -296,7 +324,8 @@
           "Company / Name: " + company,
           "WhatsApp / Email: " + contact,
           "Talent Needed: " + talent,
-          "Event Date & Location: " + eventWhen,
+          "Event date: " + readableDate,
+          "Location: " + location,
           "Brief: " + brief
         ].join("\n")
       };
@@ -307,7 +336,8 @@
           ["Company / Name", company],
           ["WhatsApp / Email", contact],
           ["Talent Needed", talent],
-          ["Event Date & Location", eventWhen],
+          ["Event date", readableDate],
+          ["Location", location],
           ["Brief", brief]
         ]);
       }).catch(function () {});

@@ -786,6 +786,15 @@ ul {
   color: rgba(244, 239, 230, 0.62);
 }
 
+.footer-note a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-note a:hover {
+  text-decoration: underline;
+}
+
 .footer-links {
   display: grid;
   gap: 0.4rem;
